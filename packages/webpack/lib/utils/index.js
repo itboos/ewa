@@ -6,6 +6,9 @@ const chalk = require('chalk');
 const path = require('path');
 const glob = require('glob');
 
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const IS_DEV = NODE_ENV === 'development';
+
 // 判断是否为 page 或者 component
 function isPageOrComponent(file) {
   return !!(~file.indexOf('components/') || ~file.indexOf('pages/'));
@@ -54,7 +57,8 @@ function buildDynamicEntries(baseDir, simplifyPath = false) {
       entries[relativePath] = file;
     }
   });
-  console.log('entries:', entries);
+  // TODO 可以去掉
+  !IS_DEV && console.log('entries:', entries);
   return entries;
 }
 
