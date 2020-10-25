@@ -22,7 +22,7 @@ const WATCH_PATTERNS = [
   'templates',
   'packages'
 ].map(dir => {
-  return path.resolve(ROOT, `src/${dir}/**/*.{ts,js,wxml,wxss,json}`);
+  return path.resolve(ROOT, `src/${dir}/**/*.{ts,js,wxml,wxss,scss,json}`);
 });
 
 module.exports = function(webpack) {

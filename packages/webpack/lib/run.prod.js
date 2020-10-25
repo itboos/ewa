@@ -4,7 +4,7 @@
 
 const path = require('path');
 const execSync = require('child_process').execSync;
-
+const ROOT = process.cwd();
 const configFile = path.resolve(__dirname, 'config.js');
 
 module.exports = function(webpack) {
@@ -13,7 +13,9 @@ module.exports = function(webpack) {
     '--config',
     configFile,
     '--colors',
-    '--display=errors-only'
+    '--display=errors-only',
+    // 输出性能分析到指定文件
+    '--profile --json > ~/Desktop/compilation-stats.json'
   ].join(' ');
 
   execSync(cmd, {
