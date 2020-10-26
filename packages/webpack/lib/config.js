@@ -1,3 +1,5 @@
+// https://www.npmjs.com/package/eslint-webpack-plugin
+
 'use strict';
 
 const webpack = require('webpack');
@@ -8,10 +10,14 @@ const WebpackBar = require('webpackbar');
 const NodeSourcePlugin = require('webpack/lib/node/NodeSourcePlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const ESLintPlugin = require('eslint-webpack-plugin');
+
 const NodeCommonModuleTemplatePlugin = require('./plugins/NodeCommonModuleTemplatePlugin');
 const AutoCleanUnusedFilesPlugin = require('./plugins/AutoCleanUnusedFilesPlugin');
 const utils = require('./utils');
-const logPlugin = require('./logPlugin')
+// eslint-disable-next-line
+const logPlugin = require('./logPlugin');
 
 // 常量
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -111,6 +117,14 @@ function makeConfig() {
     })
   ];
 
+  // 开发环境下增加 eslint 检查
+  if (IS_DEV) {
+    plugins.push(new ESLintPlugin({
+      fix: true, // 自动修复错误
+      outputReport: true
+    }));
+  }
+
   // 生产环境进一步压缩代码
   if (!IS_DEV && options.hashedModuleIds !== false) {
     plugins.push(
@@ -147,26 +161,6 @@ function makeConfig() {
 
   // Loaders
   let rules = [];
-
-  if (IS_DEV) {
-    // 开发环境下增加 eslint 检查
-    rules.push(
-      {
-        enforce: 'pre',
-        test: /\.js$/,
-        include: utils.pathToRegExp(ENTRY_DIR),
-        use: [{
-          loader: 'eslint-loader',
-          options: {
-            cache: true,
-            fix: true,
-            eslintPath: path.dirname(require.resolve('eslint/package.json')),
-            parser: path.dirname(require.resolve('babel-eslint/package.json'))
-          }
-        }]
-      }
-    );
-  }
 
   let ruleOpts = { ...options, IS_DEV, ROOT, OUTPUT_DIR, ENTRY_DIR };
   const { cssRule, cssExtensions } = require('./rules/css')(ruleOpts);

@@ -7,6 +7,7 @@ const path = require('path');
 const glob = require('glob');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
+// eslint-disable-next-line
 const IS_DEV = NODE_ENV === 'development';
 
 // 判断是否为 page 或者 component
@@ -58,7 +59,7 @@ function buildDynamicEntries(baseDir, simplifyPath = false) {
     }
   });
   // TODO 可以去掉
-  !IS_DEV && console.log('entries:', entries);
+  // !IS_DEV && console.log('entries:', entries);
   return entries;
 }
 
