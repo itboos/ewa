@@ -11,6 +11,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const NodeCommonModuleTemplatePlugin = require('./plugins/NodeCommonModuleTemplatePlugin');
 const AutoCleanUnusedFilesPlugin = require('./plugins/AutoCleanUnusedFilesPlugin');
 const utils = require('./utils');
+const logPlugin = require('./logPlugin')
 
 // 常量
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -79,6 +80,7 @@ function makeConfig() {
 
   // 插件
   let plugins = [
+    // new logPlugin(),
     new WebpackBar(),
     // Mock node env
     new NodeSourcePlugin({
